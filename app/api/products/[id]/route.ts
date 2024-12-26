@@ -2,6 +2,8 @@ import { NextRequest } from 'next/server';
 //
 import connectToDB from '@/database';
 
+export const dynamic = 'force-dynamic';
+
 type Params = {
   id: string;
 };

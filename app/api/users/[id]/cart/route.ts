@@ -3,6 +3,8 @@ import { revalidatePath } from 'next/cache';
 //
 import connectToDB from '@/database';
 
+export const dynamic = 'force-dynamic';
+
 type ShoppingCartDoc = {
   // _id: ObjectId
   userId: string;
