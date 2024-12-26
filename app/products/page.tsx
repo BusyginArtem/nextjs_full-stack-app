@@ -10,10 +10,7 @@ const Products = async () => {
   const products = await productResponse.json();
 
   const cartResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_SITE_URL}/api/users/1/cart`,
-    {
-      cache: 'no-cache',
-    }
+    `${process.env.NEXT_PUBLIC_SITE_URL}/api/users/1/cart`
   );
   const cartProducts = await cartResponse.json();
 
