@@ -1,15 +1,19 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useTransition } from 'react';
 import type { Product as ProductType } from '../product-data';
 import Product from '../components/Product';
+import { useRouter } from 'next/navigation';
 
 const ShoppingCartList = ({
   initialCartProducts,
 }: {
   initialCartProducts: ProductType[];
 }) => {
+  const router = useRouter();
+
   const [cartProducts, setCartProducts] = useState(initialCartProducts);
+  const [isPending, startTransition] = useTransition();
 
   const removeFromCart = useCallback(async function (productId: string) {
     const cartResponse = await fetch(`/api/users/1/cart`, {
@@ -24,6 +28,10 @@ const ShoppingCartList = ({
     const updatedCartProducts = await cartResponse.json();
 
     setCartProducts(updatedCartProducts);
+
+    startTransition(() => {
+      router.refresh();
+    });
   }, []);
 
   return (

@@ -1,8 +1,9 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useTransition } from 'react';
 import type { Product as ProductType } from '../product-data';
 import Product from './Product';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   products: ProductType[];
@@ -10,6 +11,10 @@ type Props = {
 };
 
 const ProductList = ({ products, initialCartProducts = [] }: Props) => {
+  const router = useRouter();
+
+  const [isPending, startTransition] = useTransition();
+
   const [cartProducts, setCartProducts] = useState(initialCartProducts);
 
   const addToCart = useCallback(async function (productId: string) {
@@ -25,6 +30,10 @@ const ProductList = ({ products, initialCartProducts = [] }: Props) => {
     const updatedCartProducts = await cartResponse.json();
 
     setCartProducts(updatedCartProducts);
+
+    startTransition(() => {
+      router.refresh();
+    });
   }, []);
 
   const removeFromCart = useCallback(async function (productId: string) {
@@ -40,6 +49,10 @@ const ProductList = ({ products, initialCartProducts = [] }: Props) => {
     const updatedCartProducts = await cartResponse.json();
 
     setCartProducts(updatedCartProducts);
+
+    startTransition(() => {
+      router.refresh();
+    });
   }, []);
 
   return (
